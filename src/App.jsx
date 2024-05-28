@@ -7,7 +7,7 @@ import IconController from "./components/IconController";
 import SideNav from "./components/SideNav";
 
 function App() {
-  const [selectedIndex, setSelectedIndex] = useState();
+  const [selectedIndex, setSelectedIndex] = useState(0);
   return (
     <div className="h-screen">
       <Header />
