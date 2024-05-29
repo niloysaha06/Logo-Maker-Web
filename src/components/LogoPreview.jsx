@@ -1,9 +1,10 @@
 import { UpdateStorageContext } from "@/context/UpdatestorageContext";
+import html2canvas from "html2canvas";
 import { icons } from "lucide-react";
 
 import { useContext, useEffect, useState } from "react";
 
-const LogoPreview = () => {
+const LogoPreview = ({ downloadIcon }) => {
   const [storageValue, setStorageValue] = useState();
   const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
 
@@ -11,6 +12,25 @@ const LogoPreview = () => {
     const storageData = JSON.parse(localStorage.getItem("value"));
     setStorageValue(storageData);
   }, [updateStorage]);
+
+  useEffect(() => {
+    if (downloadIcon) {
+      downloadPngLogo();
+    }
+  }, [downloadIcon]);
+
+  const downloadPngLogo = () => {
+    const downLoadLogoDiv = document.getElementById("downLoadLogoDiv");
+    html2canvas(downLoadLogoDiv, {
+      backgroundColor: null,
+    }).then((canvas) => {
+      const pngImage = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.href = pngImage;
+      downloadLink.download = "Niloy_Logo_Express.png";
+      downloadLink.click();
+    });
+  };
 
   const Icon = ({ name, color, size, rotate }) => {
     const LucidIcon = icons[name];
@@ -35,6 +55,7 @@ const LogoPreview = () => {
         style={{ padding: storageValue?.bgPadding }}
       >
         <div
+          id="downLoadLogoDiv"
           className="h-full w-full flex items-center justify-center"
           style={{
             borderRadius: storageValue?.bgRounded,
