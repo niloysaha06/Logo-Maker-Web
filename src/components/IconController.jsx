@@ -1,8 +1,8 @@
-import { Smile } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useContext, useEffect, useState } from "react";
 import ColorPickerController from "./ColorPickerController";
 import { UpdateStorageContext } from "@/context/UpdatestorageContext";
+import IconList from "./IconList";
 
 const IconController = () => {
   const storageValue = JSON.parse(localStorage.getItem("value"));
@@ -15,24 +15,24 @@ const IconController = () => {
   );
 
   const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
+  const [icon, setIcon] = useState(storageValue ? storageValue?.icon : "Smile");
+
   useEffect(() => {
     const updatedValue = {
       ...storageValue,
       iconSize: size,
       iconRotate: rotate,
       iconColor: color,
-      icon: "Smile",
+      icon: icon,
     };
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [size, rotate, color]);
+  }, [size, rotate, color, icon]);
+
   return (
     <div>
       <div>
-        <label>Icon</label>
-        <div className="p-3 cursor-pointer bg-gray-200 rounded-md w-[50px] h-[50px] my-2 flex items-center justify-center">
-          <Smile />
-        </div>
+        <IconList selectedIcon={(icon) => setIcon(icon)} />
         <div className="py-2">
           <label className="p-2 flex justify-between items-center">
             Size
